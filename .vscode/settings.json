@@ -1,0 +1,38 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "192.168.29.184",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "mysql-desktop",
+            "username": "parth",
+            "database": "parchandposey",
+            "password": ""
+        },
+        {
+            "previewLimit": 50,
+            "server": "192.168.29.184",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "postgres-desktop",
+            "username": "parth",
+            "database": "exercise",
+            "password": "password"
+        },
+        {
+            "previewLimit": 50,
+            "server": "192.168.146.129",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "postgres-desktop-docker-vm",
+            "database": "pagila2",
+            "username": "postgres",
+            "password": "postgres"
+        }
+    ]
+}

@@ -1,0 +1,114 @@
+/*
+This package provides the following data tables.
+
+accounts: all accounts from Parch and Posey
+orders: all orders made from 2014-12-03 to 2017-01-01
+regions: the 4 regions in the United States where Parch and Posey operates
+sales_reps: information on Parch and Poseys sales reps
+web_events: all web event data for Parch and Posey's accounts
+##
+To load from SQL:
+$ createdb parch
+$ psql parch < parch_and_posey.sql
+
+Download CSVs from https://github.com/jdbarillas/parchposey/tree/master/data-raw
+
+\copy region from ‘region.csv’ DELIMITER ‘,’ CSV HEADER;
+
+*/
+
+CREATE TABLE public.sales_reps
+(
+	id integer NOT NULL,
+	name character varying(255) COLLATE pg_catalog.”default” NOT NULL,
+	region_id integer NOT NULL,
+	CONSTRAINT sales_reps_pkey PRIMARY KEY (id),
+	CONSTRAINT region_id FOREIGN KEY (region_id)
+	REFERENCES public.region (id) MATCH SIMPLE
+	ON UPDATE NO ACTION
+	ON DELETE NO ACTION
+)
+
+CREATE TABLE public.accounts
+(
+	id integer NOT NULL,
+	name character varying(255) COLLATE pg_catalog.”default” NOT NULL,
+	website character varying(255) COLLATE pg_catalog.”default” NOT NULL,
+	lat character varying(100) COLLATE pg_catalog.”default”,
+	“long” character varying(100) COLLATE pg_catalog.”default”,
+	primary_poc character varying(255) COLLATE pg_catalog.”default”,
+	sales_rep_id integer NOT NULL,
+	CONSTRAINT accounts_pkey PRIMARY KEY (id),
+	CONSTRAINT sales_rep_id FOREIGN KEY (sales_rep_id)
+	REFERENCES public.sales_reps (id) MATCH SIMPLE
+	ON UPDATE NO ACTION
+	ON DELETE NO ACTION
+)
+ 
+CREATE TABLE public.orders
+(
+	id integer NOT NULL,
+	account_id integer NOT NULL,
+	occurred_at timestamp with time zone,
+	standard_qty integer,
+	gloss_qty integer,
+	poster_qty integer,
+	total integer,
+	standard_amt_usd numeric,
+	gloss_amt_usd numeric,
+	poster_amt_usd numeric,
+	total_amt_usd numeric,
+	CONSTRAINT orders_pkey PRIMARY KEY (id),
+	CONSTRAINT account_id FOREIGN KEY (account_id)
+	REFERENCES public.accounts (id) MATCH SIMPLE
+	ON UPDATE NO ACTION
+	ON DELETE NO ACTION
+)
+ 
+CREATE TABLE public.web_events
+(
+	id integer NOT NULL,
+	account_id integer NOT NULL,
+	occurred_at timestamp without time zone,
+	channel character varying(255) COLLATE pg_catalog.”default”,
+	CONSTRAINT web_events_pkey PRIMARY KEY (id),
+	CONSTRAINT account_id FOREIGN KEY (account_id)
+	REFERENCES public.accounts (id) MATCH SIMPLE
+	ON UPDATE NO ACTION
+	ON DELETE NO ACTION
+)
+
+
+CREATE TABLE public.orders
+(
+	id integer NOT NULL,
+	account_id integer NOT NULL,
+	occurred_at timestamp with time zone,
+	standard_qty integer,
+	gloss_qty integer,
+	poster_qty integer,
+	total integer,
+	standard_amt_usd numeric,
+	gloss_amt_usd numeric,
+	poster_amt_usd numeric,
+	total_amt_usd numeric,
+	CONSTRAINT orders_pkey PRIMARY KEY (id),
+	CONSTRAINT account_id FOREIGN KEY (account_id)
+	REFERENCES public.accounts (id) MATCH SIMPLE
+	ON UPDATE NO ACTION
+	ON DELETE NO ACTION
+)
+
+CREATE TABLE public.web_events
+(
+	id integer NOT NULL,
+	account_id integer NOT NULL,
+	occurred_at timestamp without time zone,
+	channel character varying(255) COLLATE pg_catalog.”default”,
+	CONSTRAINT web_events_pkey PRIMARY KEY (id),
+	CONSTRAINT account_id FOREIGN KEY (account_id)
+	REFERENCES public.accounts (id) MATCH SIMPLE
+	ON UPDATE NO ACTION
+	ON DELETE NO ACTION
+)
+
